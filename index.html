@@ -1,0 +1,97 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>The Man Test by Nicole Stetter</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      background: linear-gradient(to right, #ffe6ec, #ffccd5);
+      margin: 0;
+      padding: 2rem;
+      color: #333;
+      max-width: 600px;
+      margin: auto;
+    }
+    h1 {
+      color: #b30059;
+      text-align: center;
+    }
+    p {
+      margin-bottom: 1.5rem;
+    }
+    label {
+      display: flex;
+      justify-content: space-between;
+      margin-bottom: 0.75rem;
+    }
+    input[type="number"] {
+      width: 60px;
+      padding: 0.25rem;
+    }
+    button {
+      display: block;
+      width: 100%;
+      background-color: #ff4d88;
+      color: white;
+      padding: 1rem;
+      border: none;
+      font-size: 1rem;
+      cursor: pointer;
+      margin-top: 1rem;
+    }
+    #result {
+      margin-top: 2rem;
+      text-align: center;
+      font-weight: bold;
+      font-size: 1.25rem;
+    }
+  </style>
+</head>
+<body>
+  <h1>The Man Test by Nicole Stetter</h1>
+  <p>This man ranking system was designed to help women step out of their own emotions in order to more objectively rate a man in order to determine if they are a good addition to a woman's life. This was largely created from the perspective of masc/femme relationships as a way to better understand men and what they bring to the dating scene in 2025.</p>
+  <p><strong>Instructions:</strong> Please rate the man you are considering with either a .5 or 1 in the box next to each category. The rating should be based on your personal perspective of the man.</p>
+
+  <form id="manTestForm">
+    <label>Healthy <input type="number" name="healthy" min="0" max="1" step="0.5" required></label>
+    <label>Sane <input type="number" name="sane" min="0" max="1" step="0.5" required></label>
+    <label>Hot <input type="number" name="hot" min="0" max="1" step="0.5" required></label>
+    <label>Smart <input type="number" name="smart" min="0" max="1" step="0.5" required></label>
+    <label>Rich <input type="number" name="rich" min="0" max="1" step="0.5" required></label>
+    <label>Cool <input type="number" name="cool" min="0" max="1" step="0.5" required></label>
+    <label>Nice <input type="number" name="nice" min="0" max="1" step="0.5" required></label>
+    <button type="submit">Submit</button>
+  </form>
+
+  <div id="result"></div>
+
+  <script>
+    const form = document.getElementById('manTestForm');
+    const resultDiv = document.getElementById('result');
+
+    form.addEventListener('submit', function(e) {
+      e.preventDefault();
+
+      const data = new FormData(form);
+      let total = 0;
+
+      for (let value of data.values()) {
+        total += parseFloat(value);
+      }
+
+      const percentage = ((total / 7) * 100).toFixed(2);
+      resultDiv.textContent = `This man scored: ${percentage}%`;
+
+      let scores = JSON.parse(localStorage.getItem('scores') || '[]');
+      scores.push(parseFloat(percentage));
+      localStorage.setItem('scores', JSON.stringify(scores));
+
+      const avg = (scores.reduce((a, b) => a + b, 0) / scores.length).toFixed(2);
+      resultDiv.innerHTML += `<br>Average score of all submitted men: ${avg}%`;
+    });
+  </script>
+</body>
+</html>
